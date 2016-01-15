@@ -55,8 +55,9 @@ test('last item in the chain takes precedence', t => {
 test('can extend a target object', t => {
 	var ctx = {};
 
-	ctx.def = fn({
+	var result = fn({
 		chainables: {
+			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
 			bar: {bar: true}
@@ -65,6 +66,7 @@ test('can extend a target object', t => {
 		return [opts, args];
 	}, ctx);
 
+	t.is(result, ctx);
 	t.same(ctx.def(), [{}, []]);
 	t.same(ctx.foo('baz'), [{foo: true}, ['baz']]);
 	t.same(ctx.notFoo('quz'), [{foo: false}, ['quz']]);
@@ -74,8 +76,9 @@ test('can extend a target object', t => {
 test('this is preserved', t => {
 	var ctx = {};
 
-	ctx.def = fn({
+	fn({
 		chainables: {
+			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
 			bar: {bar: true}
@@ -92,8 +95,9 @@ test('this is preserved', t => {
 test('this is preserved correctly using prototypes', t => {
 	function Constructor() {}
 
-	Constructor.prototype.def = fn({
+	fn({
 		chainables: {
+			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
 			bar: {bar: true}

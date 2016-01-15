@@ -44,6 +44,7 @@ module.exports = function (options) {
 
 		if (target) {
 			extend(target, copyDefaults);
+			return target;
 		}
 
 		return wrap(copyDefaults);
