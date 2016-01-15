@@ -5,7 +5,7 @@ test('defaults and args are passed', t => {
 	t.plan(2);
 	fn({
 		defaults: {foo: 'bar'}
-	})(function (opts, args) {
+	}, function (opts, args) {
 		t.same(opts, {foo: 'bar'});
 		t.same(args, ['uni', 'corn']);
 	})('uni', 'corn');
@@ -18,7 +18,7 @@ test('chainables extend the options passed', t => {
 		chainables: {
 			moo: {cow: true}
 		}
-	})(function (opts, args) {
+	}, function (opts, args) {
 		t.same(opts, {foo: 'bar', cow: true});
 		t.same(args, ['duck', 'goose']);
 	}).moo('duck', 'goose');
@@ -27,12 +27,12 @@ test('chainables extend the options passed', t => {
 test('last item in the chain takes precedence', t => {
 	t.plan(4);
 
-	const config = fn({
+	const config = {
 		chainables: {
 			foo: {foo: true},
 			notFoo: {foo: false}
 		}
-	});
+	};
 
 	let expected = true;
 
@@ -40,8 +40,8 @@ test('last item in the chain takes precedence', t => {
 		t.is(opts.foo, expected);
 	}
 
-	const notFoo = config(isExpected).notFoo;
-	const foo = config(isExpected).foo;
+	const notFoo = fn(config, isExpected).notFoo;
+	const foo = fn(config, isExpected).foo;
 
 	foo();
 	notFoo.foo();
@@ -62,7 +62,7 @@ test('can extend a target object', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	})(function (opts, args) {
+	}, function (opts, args) {
 		return [opts, args];
 	}, ctx);
 
@@ -83,7 +83,7 @@ test('this is preserved', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	})(function (opts) {
+	}, function (opts) {
 		t.is(this, ctx);
 		return opts;
 	}, ctx);
@@ -102,7 +102,7 @@ test('this is preserved correctly using prototypes', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	})(function (opts) {
+	}, function (opts) {
 		return [this, opts];
 	}, Constructor.prototype);
 
@@ -121,7 +121,7 @@ test('spread option spreads arguments', t => {
 		chainables: {
 			foo: {foo: true}
 		}
-	})(function returnArgs() {
+	}, function returnArgs() {
 		return Array.prototype.slice.call(arguments);
 	});
 

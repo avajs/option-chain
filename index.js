@@ -1,52 +1,50 @@
 'use strict';
 var objectAssign = require('object-assign');
 
-module.exports = function (options) {
+module.exports = function (options, fn, target) {
 	var chainables = options.chainables || {};
 	var spread = options.spread;
 
-	return function (fn, target) {
-		function extend(target, getter, ctx) {
-			Object.keys(chainables).forEach(function (key) {
-				Object.defineProperty(target, key, {
-					enumerable: true,
-					configurable: true,
-					get: function () {
-						return wrap(getter, chainables[key], ctx || this);
-					}
-				});
-			});
-		}
-
-		function wrap(createOpts, extensionOpts, ctx) {
-			function wrappedOpts() {
-				return objectAssign(createOpts(), extensionOpts);
-			}
-
-			function wrappedFn() {
-				var args = Array.prototype.slice.call(arguments);
-				if (spread) {
-					args.unshift(wrappedOpts());
-				} else {
-					args = [wrappedOpts(), args];
+	function extend(target, getter, ctx) {
+		Object.keys(chainables).forEach(function (key) {
+			Object.defineProperty(target, key, {
+				enumerable: true,
+				configurable: true,
+				get: function () {
+					return wrap(getter, chainables[key], ctx || this);
 				}
-				return fn.apply(ctx || this, args);
+			});
+		});
+	}
+
+	function wrap(createOpts, extensionOpts, ctx) {
+		function wrappedOpts() {
+			return objectAssign(createOpts(), extensionOpts);
+		}
+
+		function wrappedFn() {
+			var args = Array.prototype.slice.call(arguments);
+			if (spread) {
+				args.unshift(wrappedOpts());
+			} else {
+				args = [wrappedOpts(), args];
 			}
-
-			extend(wrappedFn, wrappedOpts, ctx);
-
-			return wrappedFn;
+			return fn.apply(ctx || this, args);
 		}
 
-		function copyDefaults() {
-			return objectAssign({}, options.defaults);
-		}
+		extend(wrappedFn, wrappedOpts, ctx);
 
-		if (target) {
-			extend(target, copyDefaults);
-			return target;
-		}
+		return wrappedFn;
+	}
 
-		return wrap(copyDefaults);
-	};
+	function copyDefaults() {
+		return objectAssign({}, options.defaults);
+	}
+
+	if (target) {
+		extend(target, copyDefaults);
+		return target;
+	}
+
+	return wrap(copyDefaults);
 };
