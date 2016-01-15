@@ -111,3 +111,16 @@ test('this is preserved correctly using prototypes', t => {
 	t.is(c2.bar.foo()[0], c2);
 });
 
+test('spread option spreads arguments', t => {
+	const def = fn({
+		spread: true,
+		chainables: {
+			foo: {foo: true}
+		}
+	})(function returnArgs() {
+		return Array.prototype.slice.call(arguments);
+	});
+
+	t.same(def('a', 'b'), [{}, 'a', 'b']);
+	t.same(def.foo('c', 'd'), [{foo: true}, 'c', 'd']);
+});

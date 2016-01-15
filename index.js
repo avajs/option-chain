@@ -3,6 +3,7 @@ var objectAssign = require('object-assign');
 
 module.exports = function (options) {
 	var chainables = options.chainables || {};
+	var spread = options.spread;
 
 	return function (fn, target) {
 		function extend(target, getter, ctx) {
@@ -24,7 +25,12 @@ module.exports = function (options) {
 
 			function wrappedFn() {
 				var args = Array.prototype.slice.call(arguments);
-				return fn.call(ctx || this, wrappedOpts(), args);
+				if (spread) {
+					args.unshift(wrappedOpts());
+				} else {
+					args = [wrappedOpts(), args];
+				}
+				return fn.apply(ctx || this, args);
 			}
 
 			extend(wrappedFn, wrappedOpts, ctx);
