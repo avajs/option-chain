@@ -2,7 +2,7 @@
 var objectAssign = require('object-assign');
 
 module.exports = function (options, fn, target) {
-	var chainables = options.chainables || {};
+	var chainables = options.chainableMethods || {};
 	var spread = options.spread;
 
 	function extend(target, getter, ctx) {

@@ -11,11 +11,11 @@ test('defaults and args are passed', t => {
 	})('uni', 'corn');
 });
 
-test('chainables extend the options passed', t => {
+test('chainableMethods extend the options passed', t => {
 	t.plan(2);
 	fn({
 		defaults: {foo: 'bar'},
-		chainables: {
+		chainableMethods: {
 			moo: {cow: true}
 		}
 	}, function (opts, args) {
@@ -28,7 +28,7 @@ test('last item in the chain takes precedence', t => {
 	t.plan(4);
 
 	const config = {
-		chainables: {
+		chainableMethods: {
 			foo: {foo: true},
 			notFoo: {foo: false}
 		}
@@ -56,7 +56,7 @@ test('can extend a target object', t => {
 	var ctx = {};
 
 	var result = fn({
-		chainables: {
+		chainableMethods: {
 			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
@@ -77,7 +77,7 @@ test('this is preserved', t => {
 	var ctx = {};
 
 	fn({
-		chainables: {
+		chainableMethods: {
 			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
@@ -96,7 +96,7 @@ test('this is preserved correctly using prototypes', t => {
 	function Constructor() {}
 
 	fn({
-		chainables: {
+		chainableMethods: {
 			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
@@ -118,7 +118,7 @@ test('this is preserved correctly using prototypes', t => {
 test('spread option spreads arguments', t => {
 	const def = fn({
 		spread: true,
-		chainables: {
+		chainableMethods: {
 			foo: {foo: true}
 		}
 	}, function returnArgs() {
