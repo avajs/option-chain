@@ -1,4 +1,4 @@
-# option-chain [![Build Status](https://travis-ci.org/jamestalmage/option-chain.svg?branch=master)](https://travis-ci.org/jamestalmage/option-chain)
+# option-chain [![Build Status](https://travis-ci.org/jamestalmage/option-chain.svg?branch=master)](https://travis-ci.org/jamestalmage/option-chain) [![Coverage Status](https://coveralls.io/repos/jamestalmage/option-chain/badge.svg?branch=master&service=github)](https://coveralls.io/github/jamestalmage/option-chain?branch=master)
 
 > Use fluent property chains in lieu of options objects. 
 
