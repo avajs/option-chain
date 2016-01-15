@@ -1,0 +1,31 @@
+{
+  "name": "option-chain",
+  "version": "0.0.0",
+  "description": "My supreme module",
+  "license": "MIT",
+  "repository": "jamestalmage/option-chain",
+  "author": {
+    "name": "James Talmage",
+    "email": "james@talmage.io",
+    "url": "github.com/jamestalmage"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "devDependencies": {
+    "ava": "^0.10.0",
+    "xo": "^0.12.1"
+  },
+  "dependencies": {
+    "object-assign": "^4.0.1"
+  }
+}
