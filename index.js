@@ -4,6 +4,7 @@ var objectAssign = require('object-assign');
 module.exports = function (options, fn, target) {
 	var chainables = options.chainableMethods || {};
 	var spread = options.spread;
+	var defaults = objectAssign({}, options.defaults);
 
 	function extend(target, getter, ctx) {
 		Object.keys(chainables).forEach(function (key) {
@@ -38,7 +39,7 @@ module.exports = function (options, fn, target) {
 	}
 
 	function copyDefaults() {
-		return objectAssign({}, options.defaults);
+		return objectAssign({}, defaults);
 	}
 
 	if (target) {

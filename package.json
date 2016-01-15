@@ -1,7 +1,7 @@
 {
   "name": "option-chain",
   "version": "0.0.0",
-  "description": "My supreme module",
+  "description": "Use fluent property chains in lieu of options objects",
   "license": "MIT",
   "repository": "jamestalmage/option-chain",
   "author": {
@@ -19,7 +19,12 @@
     "index.js"
   ],
   "keywords": [
-    ""
+    "option",
+    "options",
+    "chain",
+    "chains",
+    "chainable",
+    "fluent"
   ],
   "devDependencies": {
     "ava": "^0.10.0",
