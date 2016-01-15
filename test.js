@@ -51,3 +51,22 @@ test('last item in the chain takes precedence', t => {
 	notFoo();
 	foo.notFoo();
 });
+
+test('can extend a target object', t => {
+	var ctx = {};
+
+	ctx.def = fn({
+		chainables: {
+			foo: {foo: true},
+			notFoo: {foo: false},
+			bar: {bar: true}
+		}
+	})(function (opts, args) {
+		return [opts, args];
+	}, ctx);
+
+	t.same(ctx.def(), [{}, []]);
+	t.same(ctx.foo('baz'), [{foo: true}, ['baz']]);
+	t.same(ctx.notFoo('quz'), [{foo: false}, ['quz']]);
+	t.same(ctx.bar.foo.notFoo(), [{foo: false, bar: true}, []]);
+});
