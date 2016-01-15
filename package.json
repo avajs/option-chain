@@ -1,6 +1,6 @@
 {
   "name": "option-chain",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Use fluent property chains in lieu of options objects",
   "license": "MIT",
   "repository": "jamestalmage/option-chain",
