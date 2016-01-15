@@ -5,6 +5,18 @@ module.exports = function (options) {
 	var chainables = options.chainables || {};
 
 	return function (fn, target) {
+		function extend(target, getter, ctx) {
+			Object.keys(chainables).forEach(function (key) {
+				Object.defineProperty(target, key, {
+					enumerable: true,
+					configurable: true,
+					get: function () {
+						return wrap(getter, chainables[key], ctx || this);
+					}
+				});
+			});
+		}
+
 		function wrap(createOpts, extensionOpts, ctx) {
 			function wrappedOpts() {
 				return objectAssign(createOpts(), extensionOpts);
@@ -15,15 +27,7 @@ module.exports = function (options) {
 				return fn.call(ctx || this, wrappedOpts(), args);
 			}
 
-			Object.keys(chainables).forEach(function (key) {
-				Object.defineProperty(wrappedFn, key, {
-					enumerable: true,
-					configurable: true,
-					get: function () {
-						return wrap(wrappedOpts, chainables[key], ctx || this);
-					}
-				});
-			});
+			extend(wrappedFn, wrappedOpts, ctx);
 
 			return wrappedFn;
 		}
@@ -33,15 +37,7 @@ module.exports = function (options) {
 		}
 
 		if (target) {
-			Object.keys(chainables).forEach(function (key) {
-				Object.defineProperty(target, key, {
-					enumerable: true,
-					configurable: true,
-					get: function () {
-						return wrap(copyDefaults, chainables[key], this);
-					}
-				});
-			});
+			extend(target, copyDefaults);
 		}
 
 		return wrap(copyDefaults);
