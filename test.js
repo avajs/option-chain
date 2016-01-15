@@ -70,3 +70,44 @@ test('can extend a target object', t => {
 	t.same(ctx.notFoo('quz'), [{foo: false}, ['quz']]);
 	t.same(ctx.bar.foo.notFoo(), [{foo: false, bar: true}, []]);
 });
+
+test('this is preserved', t => {
+	var ctx = {};
+
+	ctx.def = fn({
+		chainables: {
+			foo: {foo: true},
+			notFoo: {foo: false},
+			bar: {bar: true}
+		}
+	})(function (opts) {
+		t.is(this, ctx);
+		return opts;
+	}, ctx);
+
+	t.same(ctx.def(), {});
+	t.same(ctx.foo.bar(), {foo: true, bar: true});
+});
+
+test('this is preserved correctly using prototypes', t => {
+	function Constructor() {}
+
+	Constructor.prototype.def = fn({
+		chainables: {
+			foo: {foo: true},
+			notFoo: {foo: false},
+			bar: {bar: true}
+		}
+	})(function (opts) {
+		return [this, opts];
+	}, Constructor.prototype);
+
+	const c1 = new Constructor();
+	const c2 = new Constructor();
+
+	t.is(c1.def()[0], c1);
+	t.is(c1.foo.bar()[0], c1);
+	t.is(c2.def()[0], c2);
+	t.is(c2.bar.foo()[0], c2);
+});
+
