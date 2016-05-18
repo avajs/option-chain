@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "Use fluent property chains in lieu of options objects",
   "license": "MIT",
-  "repository": "jamestalmage/option-chain",
+  "repository": "avajs/option-chain",
   "author": {
     "name": "James Talmage",
     "email": "james@talmage.io",
