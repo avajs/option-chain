@@ -25,14 +25,17 @@ module.exports = function (options, fn, target) {
 
 		function wrappedFn() {
 			var args = new Array(arguments.length);
+
 			for (var i = 0; i < args.length; i++) {
 				args[i] = arguments[i];
 			}
+
 			if (spread) {
 				args.unshift(wrappedOpts());
 			} else {
 				args = [wrappedOpts(), args];
 			}
+
 			return fn.apply(ctx || this, args);
 		}
 

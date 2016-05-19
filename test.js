@@ -3,24 +3,26 @@ import fn from './';
 
 test('defaults and args are passed', t => {
 	t.plan(2);
+
 	fn({
 		defaults: {foo: 'bar'}
-	}, function (opts, args) {
-		t.same(opts, {foo: 'bar'});
-		t.same(args, ['uni', 'corn']);
+	}, (opts, args) => {
+		t.deepEqual(opts, {foo: 'bar'});
+		t.deepEqual(args, ['uni', 'corn']);
 	})('uni', 'corn');
 });
 
 test('chainableMethods extend the options passed', t => {
 	t.plan(2);
+
 	fn({
 		defaults: {foo: 'bar'},
 		chainableMethods: {
 			moo: {cow: true}
 		}
-	}, function (opts, args) {
-		t.same(opts, {foo: 'bar', cow: true});
-		t.same(args, ['duck', 'goose']);
+	}, (opts, args) => {
+		t.deepEqual(opts, {foo: 'bar', cow: true});
+		t.deepEqual(args, ['duck', 'goose']);
 	}).moo('duck', 'goose');
 });
 
@@ -53,28 +55,26 @@ test('last item in the chain takes precedence', t => {
 });
 
 test('can extend a target object', t => {
-	var ctx = {};
+	const ctx = {};
 
-	var result = fn({
+	const result = fn({
 		chainableMethods: {
 			def: {},
 			foo: {foo: true},
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	}, function (opts, args) {
-		return [opts, args];
-	}, ctx);
+	}, (opts, args) => [opts, args], ctx);
 
 	t.is(result, ctx);
-	t.same(ctx.def(), [{}, []]);
-	t.same(ctx.foo('baz'), [{foo: true}, ['baz']]);
-	t.same(ctx.notFoo('quz'), [{foo: false}, ['quz']]);
-	t.same(ctx.bar.foo.notFoo(), [{foo: false, bar: true}, []]);
+	t.deepEqual(ctx.def(), [{}, []]);
+	t.deepEqual(ctx.foo('baz'), [{foo: true}, ['baz']]);
+	t.deepEqual(ctx.notFoo('quz'), [{foo: false}, ['quz']]);
+	t.deepEqual(ctx.bar.foo.notFoo(), [{foo: false, bar: true}, []]);
 });
 
 test('this is preserved', t => {
-	var ctx = {};
+	const ctx = {};
 
 	fn({
 		chainableMethods: {
@@ -83,13 +83,13 @@ test('this is preserved', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	}, function (opts) {
+	}, opts => {
 		t.is(this, ctx);
 		return opts;
 	}, ctx);
 
-	t.same(ctx.def(), {});
-	t.same(ctx.foo.bar(), {foo: true, bar: true});
+	t.deepEqual(ctx.def(), {});
+	t.deepEqual(ctx.foo.bar(), {foo: true, bar: true});
 });
 
 test('this is preserved correctly using prototypes', t => {
@@ -102,9 +102,7 @@ test('this is preserved correctly using prototypes', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	}, function (opts) {
-		return [this, opts];
-	}, Constructor.prototype);
+	}, opts => [this, opts], Constructor.prototype);
 
 	const c1 = new Constructor();
 	const c2 = new Constructor();
@@ -125,6 +123,6 @@ test('spread option spreads arguments', t => {
 		return Array.prototype.slice.call(arguments);
 	});
 
-	t.same(def('a', 'b'), [{}, 'a', 'b']);
-	t.same(def.foo('c', 'd'), [{foo: true}, 'c', 'd']);
+	t.deepEqual(def('a', 'b'), [{}, 'a', 'b']);
+	t.deepEqual(def.foo('c', 'd'), [{foo: true}, 'c', 'd']);
 });
