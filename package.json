@@ -10,10 +10,10 @@
     "url": "github.com/jamestalmage"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4"
   },
   "scripts": {
-    "test": "xo && nyc --cache --reporter=lcov --reporter=text ava"
+    "test": "xo && nyc ava"
   },
   "files": [
     "index.js"
@@ -26,13 +26,16 @@
     "chainable",
     "fluent"
   ],
-  "dependencies": {
-    "object-assign": "^4.0.1"
-  },
   "devDependencies": {
-    "ava": "^0.14.0",
+    "ava": "^0.19.1",
     "coveralls": "^2.11.6",
-    "nyc": "^6.4.4",
-    "xo": "^0.15.1"
+    "nyc": "^10.3.2",
+    "xo": "^0.18.2"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
   }
 }

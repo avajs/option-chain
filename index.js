@@ -1,32 +1,30 @@
 'use strict';
-var objectAssign = require('object-assign');
-
-module.exports = function (options, fn, target) {
-	var chainables = options.chainableMethods || {};
-	var spread = options.spread;
-	var defaults = objectAssign({}, options.defaults);
+module.exports = (options, fn, target) => {
+	const chainables = options.chainableMethods || {};
+	const spread = options.spread;
+	const defaults = Object.assign({}, options.defaults);
 
 	function extend(target, getter, ctx) {
-		Object.keys(chainables).forEach(function (key) {
+		for (const key of Object.keys(chainables)) {
 			Object.defineProperty(target, key, {
 				enumerable: true,
 				configurable: true,
-				get: function () {
+				get() {
 					return wrap(getter, chainables[key], ctx || this);
 				}
 			});
-		});
+		}
 	}
 
 	function wrap(createOpts, extensionOpts, ctx) {
 		function wrappedOpts() {
-			return objectAssign(createOpts(), extensionOpts);
+			return Object.assign(createOpts(), extensionOpts);
 		}
 
 		function wrappedFn() {
-			var args = new Array(arguments.length);
+			let args = new Array(arguments.length);
 
-			for (var i = 0; i < args.length; i++) {
+			for (let i = 0; i < args.length; i++) {
 				args[i] = arguments[i];
 			}
 
@@ -45,7 +43,7 @@ module.exports = function (options, fn, target) {
 	}
 
 	function copyDefaults() {
-		return objectAssign({}, defaults);
+		return Object.assign({}, defaults);
 	}
 
 	if (target) {

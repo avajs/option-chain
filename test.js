@@ -1,5 +1,5 @@
 import test from 'ava';
-import fn from './';
+import fn from '.';
 
 test('defaults and args are passed', t => {
 	t.plan(2);
@@ -83,7 +83,7 @@ test('this is preserved', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	}, opts => {
+	}, function (opts) {
 		t.is(this, ctx);
 		return opts;
 	}, ctx);
@@ -102,7 +102,9 @@ test('this is preserved correctly using prototypes', t => {
 			notFoo: {foo: false},
 			bar: {bar: true}
 		}
-	}, opts => [this, opts], Constructor.prototype);
+	}, function (opts) {
+		return [this, opts];
+	}, Constructor.prototype);
 
 	const c1 = new Constructor();
 	const c2 = new Constructor();
@@ -119,7 +121,7 @@ test('spread option spreads arguments', t => {
 		chainableMethods: {
 			foo: {foo: true}
 		}
-	}, function returnArgs() {
+	}, function () {
 		return Array.prototype.slice.call(arguments);
 	});
 
