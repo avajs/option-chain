@@ -1,4 +1,6 @@
 'use strict';
+const optsSymbol = Symbol('option-chain-opts');
+
 module.exports = (options, fn, target) => {
 	const chainables = options.chainableMethods || {};
 	const spread = options.spread;
@@ -14,6 +16,13 @@ module.exports = (options, fn, target) => {
 				}
 			});
 		}
+		Object.defineProperty(target, optsSymbol, {
+			enumerable: true,
+			configurable: true,
+			get() {
+				return getter();
+			}
+		});
 	}
 
 	function wrap(createOpts, extensionOpts, ctx) {
@@ -53,3 +62,5 @@ module.exports = (options, fn, target) => {
 
 	return wrap(copyDefaults);
 };
+
+module.exports.optsSymbol = optsSymbol;

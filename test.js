@@ -128,3 +128,15 @@ test('spread option spreads arguments', t => {
 	t.deepEqual(def('a', 'b'), [{}, 'a', 'b']);
 	t.deepEqual(def.foo('c', 'd'), [{foo: true}, 'c', 'd']);
 });
+
+test('access opts with opts symbol', t => {
+	const def = fn({
+		chainableMethods: {
+			foo: {foo: true}
+		}
+	}, () => {
+
+	});
+
+	t.deepEqual(def.foo[fn.optsSymbol], {foo: true});
+});
