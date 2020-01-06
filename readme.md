@@ -2,13 +2,11 @@
 
 > Use fluent property chains in lieu of options objects
 
-
 ## Install
 
 ```
-$ npm install --save option-chain
+$ npm install option-chain
 ```
-
 
 ## Usage
 
@@ -51,14 +49,16 @@ fn.foo('a', 'b');
 
 ## API
 
-### optionChain(options, callback, [target])
+### optionChain(options, callback, target?)
 
 #### options
 
+Type: `object`
+
 ##### chainableMethods
 
-*Required*<br>
-Type: `Object`
+*Required*\
+Type: `object`
 
 A map of chainable property names to the options set by adding property to the chain.
 
@@ -83,14 +83,14 @@ Then:
 
 ##### defaults
 
-Type: `Object`<br>
+Type: `object`\
 Default: `{}`
 
 A set of default starting properties.
 
 ##### spread
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `false`
 
 By default, any arguments passed to the wrapper are passed as an array to the second argument of the wrapped function. When this is `true`, additional arguments will be spread out as additional arguments:
@@ -99,11 +99,11 @@ By default, any arguments passed to the wrapper are passed as an array to the se
 function withoutSpread(opts, args) {
 	let foo = args[0];
 	let bar = args[1];
-	// ...
+	// …
 }
 
 function withSpread(opts, foo, bar) {
-	// ...
+	// …
 }
 ```
 
@@ -124,8 +124,3 @@ const chainableMethods = {
 	defaultMethodName: {}
 }
 ```
-
-
-## License
-
-MIT © [James Talmage](https://github.com/jamestalmage)
